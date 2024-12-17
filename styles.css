@@ -1,3 +1,4 @@
+/* styles.css */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -78,4 +79,20 @@ footer {
 footer a {
     color: #ffffff;
     text-decoration: underline;
+}
+
+/* Filteroptionen */
+.filters {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.filters label {
+    font-weight: bold;
+}
+
+.filters select {
+    padding: 0.5rem;
+    font-size: 1rem;
 }

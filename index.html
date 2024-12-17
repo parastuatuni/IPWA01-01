@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Be The Change</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -23,6 +24,21 @@
     <main>
         <section id="graph">
             <h2>CO₂ - Emissionsdaten</h2>
+
+            <!-- Filteroptionen -->
+            <div class="filters">
+                <label for="country">Land:</label>
+                <select id="country">
+                    <option value="all">Alle</option>
+                </select>
+
+                <label for="company">Firma:</label>
+                <select id="company">
+                    <option value="all">Alle</option>
+                </select>
+            </div>
+
+            <!-- Graph -->
             <canvas id="co2Graph"></canvas>
         </section>
 
