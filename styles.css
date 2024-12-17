@@ -9,23 +9,44 @@ body {
 header {
     background-color: #4CAF50;
     color: white;
-    padding: 1rem 0;
-    text-align: center;
+    padding: 0.5rem 0;
+}
+
+header .header-logo {
+    display: flex;
+    align-items: center; /* Vertikale Ausrichtung */
+    justify-content: flex-start; /* Linksbündig */
+    padding-left: 1rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+header img {
+    height: 50px; /* Logo-Größe */
+    margin-right: 0.5rem; /* Abstand zwischen Logo und Titel */
+}
+
+header nav {
+    margin-top: 0.5rem;
+    padding-left: 1rem; /* Gleiche Ausrichtung wie Logo */
 }
 
 header nav ul {
     list-style: none;
     padding: 0;
-    display: flex;
-    justify-content: center;
     margin: 0;
+    display: flex; /* Flexbox für horizontale Anordnung */
+    justify-content: flex-start; /* Links ausgerichtet */
 }
 
-header nav ul li {
-    margin: 0 1rem;
+header nav ul.header-nav li {
+    margin-right: 1.5rem; /* Abstand zwischen den Links */
 }
 
-header nav ul li a {
+header nav ul.header-nav li a {
     color: white;
     text-decoration: none;
     font-weight: bold;
