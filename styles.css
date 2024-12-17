@@ -15,8 +15,8 @@ header {
 
 header .header-logo {
     display: flex;
-    align-items: center; /* Vertikale Ausrichtung */
-    justify-content: flex-start; /* Linksbündig */
+    align-items: center;
+    justify-content: flex-start;
     padding-left: 1rem;
 }
 
@@ -26,25 +26,25 @@ header h1 {
 }
 
 header img {
-    height: 50px; /* Logo-Größe */
-    margin-right: 0.5rem; /* Abstand zwischen Logo und Titel */
+    height: 50px;
+    margin-right: 0.5rem;
 }
 
 header nav {
     margin-top: 0.5rem;
-    padding-left: 1rem; /* Gleiche Ausrichtung wie Logo */
+    padding-left: 1rem;
 }
 
 header nav ul {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex; /* Flexbox für horizontale Anordnung */
-    justify-content: flex-start; /* Links ausgerichtet */
+    display: flex;
+    justify-content: flex-start;
 }
 
 header nav ul.header-nav li {
-    margin-right: 1.5rem; /* Abstand zwischen den Links */
+    margin-right: 1.5rem;
 }
 
 header nav ul.header-nav li a {
@@ -79,6 +79,14 @@ footer {
 footer a {
     color: #ffffff;
     text-decoration: underline;
+}
+
+/* Graph-Größe und Positionierung */
+#co2Graph {
+    max-height: 300px;
+    max-width: 60%;
+    margin: 1rem auto 0 0;
+    display: block;
 }
 
 /* Filteroptionen */

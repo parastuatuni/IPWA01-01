@@ -3,30 +3,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Beispiel-Daten für CO₂-Emissionen
     const data = {
-        Germany: { Siemens: 100, Volkswagen: 200, Total: 300 },
-        USA: { Apple: 150, Microsoft: 250, Total: 400 },
-        China: { Huawei: 300, Xiaomi: 100, Total: 400 },
+        Germany: { Siemens: 100, Volkswagen: 200 },
+        USA: { Apple: 150, Microsoft: 250 },
+        China: { Huawei: 300, Xiaomi: 100 },
     };
 
     const countries = Object.keys(data);
-    const companies = { all: "Alle", ...Object.assign({}, ...countries.map(c => Object.keys(data[c]).reduce((a, v) => ({ ...a, [v]: v }), {}))) };
+    const allCompanies = [...new Set(countries.flatMap(country => Object.keys(data[country])))];
 
     const countryDropdown = document.getElementById("country");
     const companyDropdown = document.getElementById("company");
 
-    // Initial Dropdowns füllen
-    function populateDropdown(dropdown, items) {
-        dropdown.innerHTML = '<option value="all">Alle</option>';
-        for (let item of items) {
-            dropdown.innerHTML += `<option value="${item}">${item}</option>`;
-        }
-    }
-    populateDropdown(countryDropdown, countries);
-    populateDropdown(companyDropdown, Object.keys(companies));
-
     let chart;
 
-    // Balkendiagramm erstellen
+    // Dropdowns füllen
+    function populateDropdown(dropdown, items) {
+        dropdown.innerHTML = '<option value="all">Alle</option>';
+        items.forEach(item => {
+            dropdown.innerHTML += `<option value="${item}">${item}</option>`;
+        });
+    }
+
+    populateDropdown(countryDropdown, countries);
+    populateDropdown(companyDropdown, allCompanies);
+
+    // Graph erstellen
     function createChart(filteredData) {
         if (chart) chart.destroy();
         chart = new Chart(ctx, {
@@ -50,17 +51,42 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Initiale Anzeige nach Ländern
-    createChart(Object.fromEntries(countries.map(c => [c, data[c].Total])));
+    // Standardanzeige: Nach Ländern
+    function showTotalsByCountry() {
+        const totals = {};
+        countries.forEach(country => {
+            totals[country] = Object.values(data[country]).reduce((a, b) => a + b, 0);
+        });
+        createChart(totals);
+    }
 
-    // Filterlogik
-    countryDropdown.addEventListener("change", () => {
-        const country = countryDropdown.value;
-        if (country === "all") {
-            createChart(Object.fromEntries(countries.map(c => [c, data[c].Total])));
+    showTotalsByCountry();
+
+    // Filter-Logik
+    function updateFilters() {
+        const selectedCountry = countryDropdown.value;
+        const selectedCompany = companyDropdown.value;
+
+        if (selectedCountry === "all" && selectedCompany === "all") {
+            showTotalsByCountry();
+        } else if (selectedCountry !== "all" && selectedCompany === "all") {
+            createChart(data[selectedCountry]);
+            populateDropdown(companyDropdown, Object.keys(data[selectedCountry]));
+        } else if (selectedCompany !== "all" && selectedCountry === "all") {
+            const companyData = {};
+            countries.forEach(country => {
+                if (data[country][selectedCompany] !== undefined) {
+                    companyData[country] = data[country][selectedCompany];
+                }
+            });
+            createChart(companyData);
+            populateDropdown(countryDropdown, Object.keys(companyData));
         } else {
-            createChart(data[country]);
+            createChart({ [selectedCompany]: data[selectedCountry][selectedCompany] });
         }
-    });
-});
+    }
 
+    // Event-Listener für Filter
+    countryDropdown.addEventListener("change", updateFilters);
+    companyDropdown.addEventListener("change", updateFilters);
+});
