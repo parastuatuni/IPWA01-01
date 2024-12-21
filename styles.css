@@ -107,3 +107,62 @@ footer a {
     padding: 0.5rem;
     font-size: 1rem;
 }
+
+/* Navigation */
+.header-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 2rem;
+    position: relative;
+}
+
+.header-nav li {
+    position: relative;
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    display: block;
+    padding: 0.5rem 1rem;
+}
+
+.header-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Dropdown-Menüs */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Direkt unter dem Hauptlink */
+    left: 0;
+    background-color: #4CAF50;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu a {
+    padding: 0.5rem 1rem;
+    white-space: nowrap; /* Kein Zeilenumbruch */
+    color: white;
+}
+
+.dropdown-menu a:hover {
+    background-color: #3e8e41;
+}
+
+/* Anzeigen der Dropdown-Menüs bei Hover */
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
