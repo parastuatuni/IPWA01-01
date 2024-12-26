@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('co2Graph').getContext('2d');
 
-    // Beispiel-Daten für CO₂-Emissionen
+    // Beispiel-Daten für CO₂-Emissionsdaten
     const data = {
         Germany: { Siemens: 100, Volkswagen: 200 },
         USA: { Apple: 150, Microsoft: 250 },
@@ -21,11 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
         de: {
             home: "Startseite",
             about: "Über Uns",
+            aboutTextLink: "Über Uns Text",
             graph: "CO₂-Emissionsdaten",
             mission: "Unsere Mission",
             missionText: "Diese Plattform ermöglicht es dir, die CO₂-Emissionen verschiedener Unternehmen aus unterschiedlichen Ländern zu erkunden. Lass uns gemeinsam an der Transparenz arbeiten!",
-            countryLabel: "Alle",
-            companyLabel: "Alle",
+            countryLabel: "All",
+            companyLabel: "All",
             graphLabel: "CO₂-Emissionen (in Tonnen)",
             footerImpressum: "Impressum",
             footerDatenschutz: "Datenschutz",
@@ -36,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         en: {
             home: "Home",
             about: "About Us",
+            aboutTextLink: "About Us Text",
             graph: "CO₂ Emissions Data",
             mission: "Our Mission",
             missionText: "This platform allows you to explore CO₂ emissions of various companies from different countries. Let's work together for transparency!",
@@ -51,11 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ar: {
             home: "الصفحة الرئيسية",
             about: "من نحن",
+            aboutTextLink: "نص عن نحن",
             graph: "بيانات انبعاثات ثاني أكسيد الكربون",
             mission: "مهمتنا",
             missionText: "تتيح لك هذه المنصة استكشاف انبعاثات ثاني أكسيد الكربون الخاصة بشركات مختلفة من دول مختلفة. دعونا نعمل معًا من أجل الشفافية!",
-            countryLabel: "الكل",
-            companyLabel: "الكل",
+            countryLabel: "All",
+            companyLabel: "All",
             graphLabel: "انبعاثات ثاني أكسيد الكربون (بالأطنان)",
             footerImpressum: "التعليمات",
             footerDatenschutz: "سياسة الخصوصية",
@@ -164,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Dropdown Menü-Links
         document.querySelector('.dropdown-menu a[href="index.html#graph"]').textContent = content.graphLink;
         document.querySelector('.dropdown-menu a[href="index.html#mission"]').textContent = content.missionLink;
+        document.querySelector('.dropdown-menu a[href="about.html#about-text"]').textContent = content.aboutTextLink;
 
         // Section Titles
         document.querySelector('#graph h2').textContent = content.graph;
