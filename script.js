@@ -16,62 +16,119 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let chart;
 
+    // Übersetzungen
+    const translations = {
+        de: {
+            home: "Startseite",
+            about: "Über Uns",
+            graph: "CO₂-Emissionsdaten",
+            mission: "Unsere Mission",
+            missionText: "Diese Plattform ermöglicht es dir, die CO₂-Emissionen verschiedener Unternehmen aus unterschiedlichen Ländern zu erkunden. Lass uns gemeinsam an der Transparenz arbeiten!",
+            countryLabel: "Alle",
+            companyLabel: "Alle",
+            graphLabel: "CO₂-Emissionen (in Tonnen)",
+            footerImpressum: "Impressum",
+            footerDatenschutz: "Datenschutz",
+            footerRights: "Alle Rechte vorbehalten.",
+            graphLink: "CO₂-Emissionsdaten",
+            missionLink: "Unsere Mission",
+        },
+        en: {
+            home: "Home",
+            about: "About Us",
+            graph: "CO₂ Emissions Data",
+            mission: "Our Mission",
+            missionText: "This platform allows you to explore CO₂ emissions of various companies from different countries. Let's work together for transparency!",
+            countryLabel: "All",
+            companyLabel: "All",
+            graphLabel: "CO₂ Emissions (in tons)",
+            footerImpressum: "Imprint",
+            footerDatenschutz: "Privacy Policy",
+            footerRights: "All rights reserved.",
+            graphLink: "CO₂ Emissions Data",
+            missionLink: "Our Mission",
+        },
+        ar: {
+            home: "الصفحة الرئيسية",
+            about: "من نحن",
+            graph: "بيانات انبعاثات ثاني أكسيد الكربون",
+            mission: "مهمتنا",
+            missionText: "تتيح لك هذه المنصة استكشاف انبعاثات ثاني أكسيد الكربون الخاصة بشركات مختلفة من دول مختلفة. دعونا نعمل معًا من أجل الشفافية!",
+            countryLabel: "الكل",
+            companyLabel: "الكل",
+            graphLabel: "انبعاثات ثاني أكسيد الكربون (بالأطنان)",
+            footerImpressum: "التعليمات",
+            footerDatenschutz: "سياسة الخصوصية",
+            footerRights: "جميع الحقوق محفوظة.",
+            graphLink: "بيانات انبعاثات ثاني أكسيد الكربون",
+            missionLink: "مهمتنا",
+        },
+    };
+
     // Dropdowns füllen
-    function populateDropdown(dropdown, items) {
-        dropdown.innerHTML = '<option value="all">Alle</option>';
+    function populateDropdown(dropdown, items, label) {
+        dropdown.innerHTML = `<option value="all">${label}</option>`;
         items.forEach(item => {
             dropdown.innerHTML += `<option value="${item}">${item}</option>`;
         });
     }
 
-    populateDropdown(countryDropdown, countries);
-    populateDropdown(companyDropdown, allCompanies);
+    populateDropdown(countryDropdown, countries, translations['de'].countryLabel);
+    populateDropdown(companyDropdown, allCompanies, translations['de'].companyLabel);
 
     // Graph erstellen
-    function createChart(filteredData) {
+    function createChart(filteredData, lang = 'de') {
+        const graphLabel = translations[lang]?.graphLabel || "CO₂-Emissionen (in Tonnen)";
+
         if (chart) chart.destroy();
         chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: Object.keys(filteredData),
                 datasets: [{
-                    label: 'CO₂-Emissionen (in Tonnen)',
+                    label: graphLabel,
                     data: Object.values(filteredData),
                     backgroundColor: 'rgba(75, 192, 192, 0.6)',
                     borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
+                    borderWidth: 1,
+                }],
             },
             options: {
                 responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: graphLabel,
+                    },
+                },
                 scales: {
-                    y: { beginAtZero: true }
-                }
-            }
+                    y: { beginAtZero: true },
+                },
+            },
         });
     }
 
     // Standardanzeige: Nach Ländern
-    function showTotalsByCountry() {
+    function showTotalsByCountry(lang = 'de') {
         const totals = {};
         countries.forEach(country => {
             totals[country] = Object.values(data[country]).reduce((a, b) => a + b, 0);
         });
-        createChart(totals);
+        createChart(totals, lang);
     }
 
     showTotalsByCountry();
 
     // Filter-Logik
-    function updateFilters() {
+    function updateFilters(lang = 'de') {
         const selectedCountry = countryDropdown.value;
         const selectedCompany = companyDropdown.value;
 
         if (selectedCountry === "all" && selectedCompany === "all") {
-            showTotalsByCountry();
+            showTotalsByCountry(lang);
         } else if (selectedCountry !== "all" && selectedCompany === "all") {
-            createChart(data[selectedCountry]);
-            populateDropdown(companyDropdown, Object.keys(data[selectedCountry]));
+            createChart(data[selectedCountry], lang);
+            populateDropdown(companyDropdown, Object.keys(data[selectedCountry]), translations[lang].companyLabel);
         } else if (selectedCompany !== "all" && selectedCountry === "all") {
             const companyData = {};
             countries.forEach(country => {
@@ -79,14 +136,68 @@ document.addEventListener('DOMContentLoaded', () => {
                     companyData[country] = data[country][selectedCompany];
                 }
             });
-            createChart(companyData);
-            populateDropdown(countryDropdown, Object.keys(companyData));
+            createChart(companyData, lang);
+            populateDropdown(countryDropdown, Object.keys(companyData), translations[lang].countryLabel);
         } else {
-            createChart({ [selectedCompany]: data[selectedCountry][selectedCompany] });
+            createChart({ [selectedCompany]: data[selectedCountry][selectedCompany] }, lang);
         }
     }
 
-    // Event-Listener für Filter
-    countryDropdown.addEventListener("change", updateFilters);
-    companyDropdown.addEventListener("change", updateFilters);
+    countryDropdown.addEventListener("change", () => updateFilters(currentLang));
+    companyDropdown.addEventListener("change", () => updateFilters(currentLang));
+
+    // Sprachwechsel
+    let currentLang = 'de';
+
+    const langDe = document.getElementById('lang-de');
+    const langEn = document.getElementById('lang-en');
+    const langAr = document.getElementById('lang-ar');
+
+    const updateLanguage = (lang) => {
+        currentLang = lang;
+        const content = translations[lang];
+
+        // Header Navigation
+        document.querySelector('.dropdown a[href="index.html"]').textContent = content.home;
+        document.querySelector('.dropdown a[href="about.html"]').textContent = content.about;
+
+        // Dropdown Menü-Links
+        document.querySelector('.dropdown-menu a[href="index.html#graph"]').textContent = content.graphLink;
+        document.querySelector('.dropdown-menu a[href="index.html#mission"]').textContent = content.missionLink;
+
+        // Section Titles
+        document.querySelector('#graph h2').textContent = content.graph;
+        document.querySelector('#mission h2').textContent = content.mission;
+
+        // Mission Text
+        document.querySelector('#mission p').textContent = content.missionText;
+
+        // Filter Labels
+        document.querySelector('label[for="country"]').textContent = content.countryLabel;
+        document.querySelector('label[for="company"]').textContent = content.companyLabel;
+
+        // Footer Links
+        const footerLinks = document.querySelectorAll('footer a');
+        footerLinks[0].textContent = content.footerImpressum;
+        footerLinks[1].textContent = content.footerDatenschutz;
+
+        // Footer Rights Text
+        const footerRights = document.querySelector('footer p').childNodes[0];
+        if (footerRights) footerRights.textContent = `${content.footerRights} `;
+
+        // Update Graph
+        updateFilters(lang);
+
+        // Anpassungen für Arabisch
+        const nav = document.querySelector('.header-nav');
+        if (lang === 'ar') {
+            nav.classList.add('arabic');
+        } else {
+            nav.classList.remove('arabic');
+        }
+    };
+
+    langDe.addEventListener('click', () => updateLanguage('de'));
+    langEn.addEventListener('click', () => updateLanguage('en'));
+    langAr.addEventListener('click', () => updateLanguage('ar'));
 });

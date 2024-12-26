@@ -9,28 +9,40 @@
 </head>
 <body>
     <header>
-        <div class="header-logo">
-            <a href="index.html"><img src="Logo.png" alt="Be The Change Logo"></a>
-            <h1><a href="index.html" class="header-title">Be The Change</a></h1>
+        <div class="header-container">
+            <!-- Logo und Titel -->
+            <div class="header-logo">
+                <a href="index.html"><img src="Logo.png" alt="Be The Change Logo"></a>
+                <h1><a href="index.html" class="header-title">Be The Change</a></h1>
+            </div>
+            
+            <!-- Sprachauswahl -->
+            <div class="language-selector">
+                <img src="de_flag.png" alt="Deutsch" class="lang-flag" id="lang-de">
+                <img src="en_flag.png" alt="Englisch" class="lang-flag" id="lang-en">
+                <img src="arabic_flag.png" alt="Arabisch" class="lang-flag" id="lang-ar">
+            </div>
+            
+            <!-- Navigation -->
+            <nav>
+                <ul class="header-nav">
+                    <li class="dropdown">
+                        <a href="index.html">Startseite</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="index.html#graph">CO₂-Emissionsdaten</a></li>
+                            <li><a href="index.html#mission">Unsere Mission</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="about.html">Über Uns</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html#about-text">Über Uns Text</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
         </div>
-        <nav>
-            <ul class="header-nav">
-                <li class="dropdown">
-                    <a href="index.html">Startseite</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="index.html#graph">CO₂-Emissionsdaten</a></li>
-                        <li><a href="index.html#mission">Unsere Mission</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="about.html">Über Uns</a>
-                    <ul class="dropdown-menu">
-                        <li><a href="about.html#about-text">Über Uns Text</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>        
+    </header>    
 
     <main>
         <section id="graph">

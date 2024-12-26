@@ -166,3 +166,92 @@ footer a {
 .dropdown:hover .dropdown-menu {
     display: block;
 }
+
+/* Header-Container */
+.header-container {
+    display: flex;
+    flex-direction: column; /* Spaltenlayout */
+    align-items: flex-start;
+    padding: 1rem;
+}
+
+/* Logo und Titel */
+.header-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    margin-bottom: 0.5rem; /* Abstand zwischen Logo und Sprachwahl */
+}
+
+.header-logo a {
+    text-decoration: none;
+}
+
+.header-title {
+    font-size: 1.5rem;
+    color: white;
+    margin-left: 0.5rem;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Sprachauswahl */
+.language-selector {
+    position: absolute; /* Position oben rechts */
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.lang-flag {
+    width: 30px;
+    height: auto;
+    cursor: pointer;
+}
+
+/* Navigation */
+.header-nav {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    margin: 1rem 0 0 0; /* Abstand zum unteren Rand */
+}
+
+.header-nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+}
+
+.header-nav a:hover {
+    text-decoration: underline;
+}
+
+/* Dropdown-Menüs */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Direkt unter dem Hauptlink */
+    left: 0;
+    background-color: #4CAF50;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Arabisch: Rechtsbündig */
+.header-nav.arabic {
+    margin-left: auto;
+    justify-content: flex-end;
+    direction: rtl;
+}
