@@ -25,8 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
             graph: "CO₂-Emissionsdaten",
             mission: "Unsere Mission",
             missionText: "Diese Plattform ermöglicht es dir, die CO₂-Emissionen verschiedener Unternehmen aus unterschiedlichen Ländern zu erkunden. Lass uns gemeinsam an der Transparenz arbeiten!",
-            countryLabel: "All",
-            companyLabel: "All",
+            countryLabel: "Land",
+            companyLabel: "Firma",
+            allOption: "All",
             graphLabel: "CO₂-Emissionen (in Tonnen)",
             footerImpressum: "Impressum",
             footerDatenschutz: "Datenschutz",
@@ -41,8 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
             graph: "CO₂ Emissions Data",
             mission: "Our Mission",
             missionText: "This platform allows you to explore CO₂ emissions of various companies from different countries. Let's work together for transparency!",
-            countryLabel: "All",
-            companyLabel: "All",
+            countryLabel: "Country",
+            companyLabel: "Company",
+            allOption: "All",
             graphLabel: "CO₂ Emissions (in tons)",
             footerImpressum: "Imprint",
             footerDatenschutz: "Privacy Policy",
@@ -57,8 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
             graph: "بيانات انبعاثات ثاني أكسيد الكربون",
             mission: "مهمتنا",
             missionText: "تتيح لك هذه المنصة استكشاف انبعاثات ثاني أكسيد الكربون الخاصة بشركات مختلفة من دول مختلفة. دعونا نعمل معًا من أجل الشفافية!",
-            countryLabel: "All",
-            companyLabel: "All",
+            countryLabel: "البلد",
+            companyLabel: "الشركة",
+            allOption: "الكل",
             graphLabel: "انبعاثات ثاني أكسيد الكربون (بالأطنان)",
             footerImpressum: "التعليمات",
             footerDatenschutz: "سياسة الخصوصية",
@@ -69,15 +72,15 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Dropdowns füllen
-    function populateDropdown(dropdown, items, label) {
-        dropdown.innerHTML = `<option value="all">${label}</option>`;
+    function populateDropdown(dropdown, items, label, allOption) {
+        dropdown.innerHTML = `<option value="all">${allOption}</option>`;
         items.forEach(item => {
             dropdown.innerHTML += `<option value="${item}">${item}</option>`;
         });
     }
 
-    populateDropdown(countryDropdown, countries, translations['de'].countryLabel);
-    populateDropdown(companyDropdown, allCompanies, translations['de'].companyLabel);
+    populateDropdown(countryDropdown, countries, translations['de'].countryLabel, translations['de'].allOption);
+    populateDropdown(companyDropdown, allCompanies, translations['de'].companyLabel, translations['de'].allOption);
 
     // Graph erstellen
     function createChart(filteredData, lang = 'de') {
@@ -131,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showTotalsByCountry(lang);
         } else if (selectedCountry !== "all" && selectedCompany === "all") {
             createChart(data[selectedCountry], lang);
-            populateDropdown(companyDropdown, Object.keys(data[selectedCountry]), translations[lang].companyLabel);
+            populateDropdown(companyDropdown, Object.keys(data[selectedCountry]), translations[lang].companyLabel, translations[lang].allOption);
         } else if (selectedCompany !== "all" && selectedCountry === "all") {
             const companyData = {};
             countries.forEach(country => {
@@ -140,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             createChart(companyData, lang);
-            populateDropdown(countryDropdown, Object.keys(companyData), translations[lang].countryLabel);
+            populateDropdown(countryDropdown, Object.keys(companyData), translations[lang].countryLabel, translations[lang].allOption);
         } else {
             createChart({ [selectedCompany]: data[selectedCountry][selectedCompany] }, lang);
         }
