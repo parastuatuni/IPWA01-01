@@ -2,11 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('co2Graph')?.getContext('2d');
 
     // Beispiel-Daten für CO₂-Emissionsdaten
-    const data = {
-        Germany: { Siemens: 100, Volkswagen: 200 },
-        USA: { Apple: 150, Microsoft: 250 },
-        China: { Huawei: 300, Xiaomi: 100 },
-    };
+const data = {
+    Germany: { Siemens: 100, Volkswagen: 200 },
+    USA: { Apple: 150, Microsoft: 250 },
+    China: { Huawei: 300, Xiaomi: 100 },
+    Switzerland: { Nestle: 700, Lindt: 200 },
+    Peru: { Alicorp: 120, Primax: 200 },
+    Turkey: { Turkish_Airlines: 500, Koton: 420 },
+    Greece: { OPAP: 160, OTE_Group: 220 },
+    Japan: { Toyota: 580, Mitsubishi: 590 },
+    Vietnam: { Vingroup: 380, Viettel_Group: 200 },
+    Egypt: { Ezz_Steel: 590, Mansour_Group: 630 }
+};
 
     const countries = Object.keys(data);
     const allCompanies = [...new Set(countries.flatMap(country => Object.keys(data[country])))];
