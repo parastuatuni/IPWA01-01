@@ -198,19 +198,53 @@ footer a {
 
 /* Sprachauswahl */
 .language-selector {
-    position: absolute; /* Position oben rechts */
+    position: absolute;
     top: 1rem;
     right: 1rem;
     display: flex;
     gap: 1rem;
     align-items: center;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .lang-flag {
     width: 30px;
-    height: auto;
+    height: 20px; /* Fixed height for consistency */
     cursor: pointer;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+    object-fit: cover; /* Ensures the flag images maintain their aspect ratio */
 }
+
+/* Hover effect */
+.lang-flag:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Active language indicator */
+.lang-flag.active {
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Optional: Add tooltip on hover */
+.lang-flag:hover::after {
+    content: attr(alt);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
 
 /* Navigation */
 .header-nav {
