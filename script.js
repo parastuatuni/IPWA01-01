@@ -160,8 +160,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const langAr = document.getElementById('lang-ar');
 
     const updateLanguage = (lang) => {
+        // Add these lines at the start of the function
+        const allFlags = document.querySelectorAll('.lang-flag');
+        allFlags.forEach(flag => flag.classList.remove('active'));
+        document.getElementById(`lang-${lang}`).classList.add('active');
+    
+        // Keep your existing code
         currentLang = lang;
-        const content = translations[lang];
+        const content = translations[lang];    
 
         // Header Navigation
         document.querySelector('.dropdown a[href="index.html"]').textContent = content.home;
