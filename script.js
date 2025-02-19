@@ -131,9 +131,10 @@ const data = {
     function createChart(filteredData, lang = 'de') {
         if (!ctx) return;
         const graphLabel = translations[lang]?.graphLabel || "CO₂-Emissionen (in Tonnen)";
-
+    
         if (chart) chart.destroy();
-        chart = new Chart(ctx, {
+        
+        const options = {
             type: 'bar',
             data: {
                 labels: Object.keys(filteredData),
@@ -147,6 +148,7 @@ const data = {
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     title: {
                         display: true,
@@ -156,9 +158,14 @@ const data = {
                 scales: {
                     y: { beginAtZero: true },
                 },
+                animation: {
+                    duration: 0 // Disable animations
+                }
             },
-        });
-    }
+        };
+    
+        chart = new Chart(ctx, options);
+    }    
 
     // Standardanzeige: Nach Ländern
     function showTotalsByCountry(lang = 'de') {

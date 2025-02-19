@@ -1,15 +1,27 @@
+:root {
+    --primary-green: #2E7D32;
+    --secondary-green: #4CAF50;
+    --light-green: #C8E6C9;
+    --background: #F5F7F5;
+    --text-dark: #1C2833;
+    --text-light: #FFFFFF;
+    --accent-blue: #1565C0;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-display: swap;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f9;
-    color: #333;
+    background-color: var(--background);
+    color: var(--text-dark);
 }
 
 header {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--primary-green);
+    color: var(--text-light);
     padding: 0.5rem 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 header .header-logo {
@@ -30,7 +42,7 @@ header img {
 }
 
 .header-title {
-    color: white;
+    color: var(--text-light);
     text-decoration: none;
     font-weight: bold;
 }
@@ -53,7 +65,7 @@ header nav ul.header-nav li {
 }
 
 header nav ul.header-nav li a {
-    color: white;
+    color: var(--text-light);
     text-decoration: none;
     font-weight: bold;
 }
@@ -70,25 +82,37 @@ section#graph {
     margin-top: 2rem;
 }
 
-section#ueber-uns {
-    margin-top: 2rem;
+section#mission {
+    background-color: var(--light-green);
+    padding: 2rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+section#mission h2 {
+    color: var(--primary-green);
 }
 
 footer {
     text-align: center;
     padding: 1rem;
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--primary-green);
+    color: var(--text-light);
 }
 
 footer a {
-    color: white;
-    text-decoration: none;
+    color: var(--text-light);
+    text-decoration: underline;
+}
+
+footer a:hover {
+    color: var(--light-green);
 }
 
 #co2Graph {
+    width: 60% !important;
+    height: auto !important;
     max-height: 300px;
-    max-width: 60%;
     margin: 1rem 0 0 0;
     display: block;
 }
@@ -101,11 +125,14 @@ footer a {
 
 .filters label {
     font-weight: bold;
+    color: var(--text-dark);
 }
 
 .filters select {
     padding: 0.5rem;
     font-size: 1rem;
+    border: 1px solid var(--secondary-green);
+    border-radius: 4px;
 }
 
 /* Navigation */
@@ -124,7 +151,7 @@ footer a {
 
 .header-nav a {
     text-decoration: none;
-    color: white;
+    color: var(--text-light);
     font-weight: bold;
     display: block;
     padding: 0.5rem 1rem;
@@ -134,17 +161,17 @@ footer a {
     text-decoration: underline;
 }
 
-/* Dropdown-Menüs */
+/* Dropdown Menus */
 .dropdown-menu {
     display: none;
     position: absolute;
-    top: 100%; /* Direkt unter dem Hauptlink */
+    top: 100%;
     left: 0;
-    background-color: #4CAF50;
+    background-color: var(--primary-green);
     list-style: none;
     padding: 0.5rem 0;
     margin: 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     z-index: 1000;
 }
 
@@ -154,34 +181,34 @@ footer a {
 
 .dropdown-menu a {
     padding: 0.5rem 1rem;
-    white-space: nowrap; /* Kein Zeilenumbruch */
-    color: white;
+    white-space: nowrap;
+    color: var(--text-light);
 }
 
 .dropdown-menu a:hover {
-    background-color: #3e8e41;
+    background-color: var(--secondary-green);
 }
 
-/* Anzeigen der Dropdown-Menüs bei Hover */
 .dropdown:hover .dropdown-menu {
     display: block;
 }
 
-/* Header-Container */
+/* Header Container */
 .header-container {
     display: flex;
-    flex-direction: column; /* Spaltenlayout */
+    flex-direction: column;
     align-items: flex-start;
     padding: 1rem;
+    position: relative;
 }
 
-/* Logo und Titel */
+/* Logo and Title */
 .header-logo {
     display: flex;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    margin-bottom: 0.5rem; /* Abstand zwischen Logo und Sprachwahl */
+    margin-bottom: 0.5rem;
 }
 
 .header-logo a {
@@ -190,13 +217,13 @@ footer a {
 
 .header-title {
     font-size: 1.5rem;
-    color: white;
+    color: var(--text-light);
     margin-left: 0.5rem;
     text-decoration: none;
     font-weight: bold;
 }
 
-/* Sprachauswahl */
+/* Language Selector */
 .language-selector {
     position: absolute;
     top: 1rem;
@@ -206,81 +233,41 @@ footer a {
     align-items: center;
     padding: 5px;
     border-radius: 5px;
+    z-index: 1100;
 }
 
 .lang-flag {
     width: 30px;
-    height: 20px; /* Fixed height for consistency */
+    height: 20px;
     cursor: pointer;
     border: 2px solid transparent;
     border-radius: 4px;
     transition: all 0.2s ease-in-out;
-    object-fit: cover; /* Ensures the flag images maintain their aspect ratio */
+    object-fit: cover;
 }
 
-/* Hover effect */
 .lang-flag:hover {
     transform: scale(1.1);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
-/* Active language indicator */
 .lang-flag.active {
-    border: 2px solid #fff;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    border: 2px solid var(--text-light);
+    box-shadow: 0 0 5px rgba(255,255,255,0.5);
 }
 
-/* Optional: Add tooltip on hover */
 .lang-flag:hover::after {
     content: attr(alt);
     position: absolute;
     bottom: -25px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
+    background-color: rgba(0,0,0,0.8);
+    color: var(--text-light);
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 12px;
     white-space: nowrap;
-}
-
-
-/* Navigation */
-.header-nav {
-    list-style: none;
-    display: flex;
-    gap: 2rem;
-    margin: 1rem 0 0 0; /* Abstand zum unteren Rand */
-}
-
-.header-nav a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    padding: 0.5rem 1rem;
-}
-
-.header-nav a:hover {
-    text-decoration: underline;
-}
-
-/* Dropdown-Menüs */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    top: 100%; /* Direkt unter dem Hauptlink */
-    left: 0;
-    background-color: #4CAF50;
-    list-style: none;
-    padding: 0.5rem 0;
-    margin: 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: block;
 }
 
 /* RTL Support for Arabic */
@@ -289,7 +276,6 @@ footer a {
     text-align: right;
 }
 
-/* Fix for header layout in RTL */
 .rtl-content .header-container {
     position: relative;
 }
@@ -304,7 +290,6 @@ footer a {
     padding-left: 0;
 }
 
-/* Fix for graph section in RTL */
 .rtl-content .filters {
     flex-direction: row-reverse;
     justify-content: flex-end;
@@ -318,29 +303,34 @@ footer a {
     margin-right: 0;
 }
 
-/* Fix dropdown menus in RTL */
 .rtl-content .dropdown-menu {
     right: 0;
     left: auto;
     text-align: right;
 }
 
-/* Ensure consistent graph size */
-#co2Graph {
-    width: 60% !important;
-    height: auto !important;
-    max-height: 300px;
-    margin: 1rem 0 0 0;
-    display: block;
-}
-
-/* Fix header spacing for RTL */
 .rtl-content .header-logo {
     margin-right: 1rem;
     margin-left: 0;
 }
 
-/* Ensure language selector stays above content */
-.language-selector {
-    z-index: 1100;
+#graph {
+    min-height: 400px; 
+    position: relative;
+}
+
+#co2Graph {
+    width: 60% !important;
+    height: 300px !important;
+    margin: 1rem 0 0 0;
+    display: block;
+    position: relative;
+}
+
+.filters {
+    width: 60%;
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    position: relative;
 }
