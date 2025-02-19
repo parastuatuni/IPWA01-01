@@ -2,18 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('co2Graph')?.getContext('2d');
 
     // Beispiel-Daten für CO₂-Emissionsdaten
-const data = {
-    Germany: { Siemens: 100, Volkswagen: 200 },
-    USA: { Apple: 150, Microsoft: 250 },
-    China: { Huawei: 300, Xiaomi: 100 },
-    Switzerland: { Nestle: 700, Lindt: 200 },
-    Peru: { Alicorp: 120, Primax: 200 },
-    Turkey: { Turkish_Airlines: 500, Koton: 420 },
-    Greece: { OPAP: 160, OTE_Group: 220 },
-    Japan: { Toyota: 580, Mitsubishi: 590 },
-    Vietnam: { Vingroup: 380, Viettel_Group: 200 },
-    Egypt: { Ezz_Steel: 590, Mansour_Group: 630 }
-};
+    const data = {
+        Germany: { Siemens: 100, Volkswagen: 200 },
+        USA: { Apple: 150, Microsoft: 250 },
+        China: { Huawei: 300, Xiaomi: 100 },
+        Switzerland: { Nestle: 700, Lindt: 200 },
+        Peru: { Alicorp: 120, Primax: 200 },
+        Turkey: { Turkish_Airlines: 500, Koton: 420 },
+        Greece: { OPAP: 160, OTE_Group: 220 },
+        Japan: { Toyota: 580, Mitsubishi: 590 },
+        Vietnam: { Vingroup: 380, Viettel_Group: 200 },
+        Egypt: { Ezz_Steel: 590, Mansour_Group: 630 }
+    };
 
     const countries = Object.keys(data);
     const allCompanies = [...new Set(countries.flatMap(country => Object.keys(data[country])))];
@@ -21,7 +21,7 @@ const data = {
     let chart;
     let currentLang = 'de';
 
-    // Translations moved outside of any function
+    // Translations object
     const translations = {
         de: {
             home: "Startseite",
@@ -39,6 +39,7 @@ const data = {
             footerRights: "Alle Rechte vorbehalten.",
             graphLink: "CO₂-Emissionsdaten",
             missionLink: "Unsere Mission",
+            menuToggle: "Menü",
 
             //Über uns:
             aboutTitle: "Über Uns",
@@ -70,6 +71,7 @@ const data = {
             footerRights: "All rights reserved.",
             graphLink: "CO₂ Emissions Data",
             missionLink: "Our Mission",
+            menuToggle: "Menu",
 
             //About Us:
             aboutTitle: "About Us",
@@ -101,6 +103,7 @@ const data = {
             footerRights: "جميع الحقوق محفوظة.",
             graphLink: "بيانات انبعاثات ثاني أكسيد الكربون",
             missionLink: "مهمتنا",
+            menuToggle: "القائمة",
             
             //About Us:
             aboutTitle: "من نحن",
@@ -117,6 +120,37 @@ const data = {
             imprintContent: "يحتوي هذا القسم على معلومات عن مزود الموقع، مثل الاسم والعنوان ومعلومات الاتصال وما إلى ذلك.",
         },
     };
+    // Mobile menu functionality
+    const mobileMenuButton = document.querySelector('.mobile-menu-button');
+    const headerNav = document.querySelector('.header-nav');
+
+    if (mobileMenuButton && headerNav) {
+        mobileMenuButton.addEventListener('click', () => {
+            headerNav.classList.toggle('show');
+            mobileMenuButton.setAttribute('aria-expanded', 
+                headerNav.classList.contains('show').toString());
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!headerNav.contains(e.target) && 
+                !mobileMenuButton.contains(e.target) && 
+                headerNav.classList.contains('show')) {
+                headerNav.classList.remove('show');
+                mobileMenuButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // Handle responsive behavior
+    function handleResize() {
+        if (window.innerWidth > 480) {
+            headerNav?.classList.remove('show');
+            mobileMenuButton?.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    window.addEventListener('resize', handleResize);
 
     // Dropdowns füllen
     function populateDropdown(dropdown, items, label, allOption) {
@@ -166,7 +200,6 @@ const data = {
     
         chart = new Chart(ctx, options);
     }    
-
     // Standardanzeige: Nach Ländern
     function showTotalsByCountry(lang = 'de') {
         const totals = {};
@@ -217,6 +250,10 @@ const data = {
             document.querySelector('.dropdown-menu a[href="index.html#mission"]').textContent = content.missionLink;
             document.querySelector('.dropdown-menu a[href="about.html#about-text"]').textContent = content.aboutTextLink;
 
+            // Update mobile menu button text
+            if (mobileMenuButton) {
+                mobileMenuButton.setAttribute('aria-label', content.menuToggle);
+            }
             // Update footer
             const footerLinks = document.querySelectorAll('footer a');
             footerLinks[0].textContent = content.footerImpressum;
@@ -239,16 +276,20 @@ const data = {
                 mainContent.classList.add('rtl-content');
                 document.dir = 'rtl';
                 document.documentElement.lang = 'ar';
-                document.body.classList.add('rtl-content'); // Add this line
+                document.body.classList.add('rtl-content');
             } else {
                 nav.classList.remove('arabic');
                 mainContent.classList.remove('rtl-content');
                 document.dir = 'ltr';
                 document.documentElement.lang = lang;
-                document.body.classList.remove('rtl-content'); // Add this line
+                document.body.classList.remove('rtl-content');
             }
 
-
+            // Reset mobile menu state when changing language
+            if (headerNav?.classList.contains('show')) {
+                headerNav.classList.remove('show');
+                mobileMenuButton?.setAttribute('aria-expanded', 'false');
+            }
             // Update page-specific content
             switch(currentPage) {
                 case 'index.html':
@@ -320,4 +361,7 @@ const data = {
         // Initialize with German language
         updatePageContent('de');
     }
+
+    // Initial resize handle
+    handleResize();
 });

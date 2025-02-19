@@ -6,8 +6,14 @@
     --text-dark: #1C2833;
     --text-light: #FFFFFF;
     --accent-blue: #1565C0;
+    
+    /* Breakpoints */
+    --mobile-width: 480px;
+    --tablet-width: 768px;
+    --desktop-width: 1024px;
 }
 
+/* Base styles */
 body {
     font-family: 'Source Sans Pro', sans-serif;
     font-display: swap;
@@ -80,6 +86,8 @@ section {
 
 section#graph {
     margin-top: 2rem;
+    min-height: 400px;
+    position: relative;
 }
 
 section#mission {
@@ -109,18 +117,21 @@ footer a:hover {
     color: var(--light-green);
 }
 
+/* Graph and Filters */
 #co2Graph {
     width: 60% !important;
-    height: auto !important;
-    max-height: 300px;
+    height: 300px !important;
     margin: 1rem 0 0 0;
     display: block;
+    position: relative;
 }
 
 .filters {
+    width: 60%;
     margin-bottom: 1rem;
     display: flex;
     gap: 1rem;
+    position: relative;
 }
 
 .filters label {
@@ -270,7 +281,7 @@ footer a:hover {
     white-space: nowrap;
 }
 
-/* RTL Support for Arabic */
+/* RTL Support */
 .rtl-content {
     direction: rtl;
     text-align: right;
@@ -314,23 +325,90 @@ footer a:hover {
     margin-left: 0;
 }
 
-#graph {
-    min-height: 400px; 
-    position: relative;
+/* Mobile Styles */
+@media screen and (max-width: 480px) {
+    .header-container {
+        padding: 0.5rem;
+    }
+
+    .header-logo img {
+        height: 35px;
+    }
+
+    .header-title {
+        font-size: 1.2rem;
+    }
+
+    #co2Graph {
+        width: 95% !important;
+        height: 250px !important;
+    }
+
+    .filters {
+        width: 95%;
+        flex-direction: column;
+    }
+
+    #mission {
+        padding: 1rem;
+        margin: 1rem 0;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    .language-selector {
+        top: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .rtl-content .language-selector {
+        left: 0.5rem;
+        right: auto;
+    }
 }
 
-#co2Graph {
-    width: 60% !important;
-    height: 300px !important;
-    margin: 1rem 0 0 0;
-    display: block;
-    position: relative;
+/* Tablet Styles */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .header-container {
+        padding: 0.75rem;
+    }
+
+    .header-logo img {
+        height: 40px;
+    }
+
+    #co2Graph {
+        width: 85% !important;
+        height: 300px !important;
+    }
+
+    .filters {
+        width: 85%;
+    }
+
+    main {
+        padding: 1.5rem;
+    }
+
+    .rtl-content .filters {
+        width: 85%;
+    }
 }
 
-.filters {
-    width: 60%;
-    margin-bottom: 1rem;
-    display: flex;
-    gap: 1rem;
-    position: relative;
+/* Desktop Styles */
+@media screen and (min-width: 769px) {
+    #co2Graph {
+        width: 60% !important;
+        height: 300px !important;
+    }
+
+    .filters {
+        width: 60%;
+    }
+
+    main {
+        padding: 2rem;
+    }
 }
