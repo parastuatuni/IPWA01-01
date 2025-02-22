@@ -459,3 +459,25 @@ footer a:hover {
         padding: 2rem;
     }
 }
+
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+    display: none; 
+}
+
+/* Hamburger Menu nur bei mobilen Geräten anzeigen */
+@media screen and (max-width: 480px) {
+    .mobile-menu-button {
+        display: block;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        background: none;
+        border: none;
+        color: var(--text-light);
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1100;
+    }
+}
