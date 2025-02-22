@@ -1,26 +1,44 @@
 document.addEventListener('DOMContentLoaded', () => {
     const ctx = document.getElementById('co2Graph')?.getContext('2d');
+    // Security Funktion
+function validateSelection(value, allowedValues) {
+    if (!value || !allowedValues) return false;
+    return allowedValues.includes(value) || value === 'all';
+}
 
-    // Beispiel-Daten für CO₂-Emissionsdaten
-    const data = {
-        Germany: { Siemens: 100, Volkswagen: 200 },
-        USA: { Apple: 150, Microsoft: 250 },
-        China: { Huawei: 300, Xiaomi: 100 },
-        Switzerland: { Nestle: 700, Lindt: 200 },
-        Peru: { Alicorp: 120, Primax: 200 },
-        Turkey: { Turkish_Airlines: 500, Koton: 420 },
-        Greece: { OPAP: 160, OTE_Group: 220 },
-        Japan: { Toyota: 580, Mitsubishi: 590 },
-        Vietnam: { Vingroup: 380, Viettel_Group: 200 },
-        Egypt: { Ezz_Steel: 590, Mansour_Group: 630 }
-    };
+function sanitizeString(str) {
+    if (typeof str !== 'string') return '';
+    return str.replace(/[<>&"']/g, match => {
+        const entities = {
+            '<': '&lt;',
+            '>': '&gt;',
+            '&': '&amp;',
+            '"': '&quot;',
+            "'": '&#x27;'
+        };
+        return entities[match];
+    });
+}
 
-    const countries = Object.keys(data);
-    const allCompanies = [...new Set(countries.flatMap(country => Object.keys(data[country])))];
+// Beispiel-Daten für CO₂-Emissionsdaten
+const data = {
+    Germany: { Siemens: 100, Volkswagen: 200 },
+    USA: { Apple: 150, Microsoft: 250 },
+    China: { Huawei: 300, Xiaomi: 100 },
+    Switzerland: { Nestle: 700, Lindt: 200 },
+    Peru: { Alicorp: 120, Primax: 200 },
+    Turkey: { Turkish_Airlines: 500, Koton: 420 },
+    Greece: { OPAP: 160, OTE_Group: 220 },
+    Japan: { Toyota: 580, Mitsubishi: 590 },
+    Vietnam: { Vingroup: 380, Viettel_Group: 200 },
+    Egypt: { Ezz_Steel: 590, Mansour_Group: 630 }
+};
 
-    let chart;
-    let currentLang = 'de';
+const countries = Object.keys(data);
+const allCompanies = [...new Set(countries.flatMap(country => Object.keys(data[country])))];
 
+let chart;
+let currentLang = 'de';
     // Translations object
     const translations = {
         de: {
@@ -131,7 +149,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 headerNav.classList.contains('show').toString());
         });
 
-        // Close mobile menu when clicking outside
         document.addEventListener('click', (e) => {
             if (!headerNav.contains(e.target) && 
                 !mobileMenuButton.contains(e.target) && 
@@ -142,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Handle responsive behavior
     function handleResize() {
         if (window.innerWidth > 480) {
             headerNav?.classList.remove('show');
@@ -152,16 +168,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('resize', handleResize);
 
-    // Dropdowns füllen
+    // Updated dropdown population with security
     function populateDropdown(dropdown, items, label, allOption) {
-        if (!dropdown) return;
-        dropdown.innerHTML = `<option value="all">${allOption}</option>`;
+        if (!dropdown || !Array.isArray(items)) return;
+        const safeAllOption = sanitizeString(allOption);
+        dropdown.innerHTML = `<option value="all">${safeAllOption}</option>`;
         items.forEach(item => {
-            dropdown.innerHTML += `<option value="${item}">${item}</option>`;
+            const safeItem = sanitizeString(item);
+            dropdown.innerHTML += `<option value="${safeItem}">${safeItem}</option>`;
         });
     }
 
-    // Graph erstellen
     function createChart(filteredData, lang = 'de') {
         if (!ctx) return;
         const graphLabel = translations[lang]?.graphLabel || "CO₂-Emissionen (in Tonnen)";
@@ -193,14 +210,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     y: { beginAtZero: true },
                 },
                 animation: {
-                    duration: 0 // Disable animations
+                    duration: 0
                 }
             },
         };
     
         chart = new Chart(ctx, options);
-    }    
-    // Standardanzeige: Nach Ländern
+    }
     function showTotalsByCountry(lang = 'de') {
         const totals = {};
         countries.forEach(country => {
@@ -209,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
         createChart(totals, lang);
     }
 
-    // Filter-Logik
     function updateFilters(lang = 'de') {
         const countryDropdown = document.getElementById("country");
         const companyDropdown = document.getElementById("company");
@@ -217,6 +232,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const selectedCountry = countryDropdown.value;
         const selectedCompany = companyDropdown.value;
+
+        // Validate selections
+        if (!validateSelection(selectedCountry, [...countries, 'all']) || 
+            !validateSelection(selectedCompany, [...allCompanies, 'all'])) {
+            console.error('Invalid selection detected');
+            return;
+        }
 
         if (selectedCountry === "all" && selectedCompany === "all") {
             showTotalsByCountry(lang);
@@ -243,89 +265,89 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
         try {
-            // Update navigation elements
-            document.querySelector('.dropdown a[href="index.html"]').textContent = content.home;
-            document.querySelector('.dropdown a[href="about.html"]').textContent = content.about;
-            document.querySelector('.dropdown-menu a[href="index.html#graph"]').textContent = content.graphLink;
-            document.querySelector('.dropdown-menu a[href="index.html#mission"]').textContent = content.missionLink;
-            document.querySelector('.dropdown-menu a[href="about.html#about-text"]').textContent = content.aboutTextLink;
+            // Update navigation elements with sanitization
+            document.querySelector('.dropdown a[href="index.html"]').textContent = sanitizeString(content.home);
+            document.querySelector('.dropdown a[href="about.html"]').textContent = sanitizeString(content.about);
+            document.querySelector('.dropdown-menu a[href="index.html#graph"]').textContent = sanitizeString(content.graphLink);
+            document.querySelector('.dropdown-menu a[href="index.html#mission"]').textContent = sanitizeString(content.missionLink);
+            document.querySelector('.dropdown-menu a[href="about.html#about-text"]').textContent = sanitizeString(content.aboutTextLink);
 
-            // Update mobile menu button text
             if (mobileMenuButton) {
-                mobileMenuButton.setAttribute('aria-label', content.menuToggle);
+                mobileMenuButton.setAttribute('aria-label', sanitizeString(content.menuToggle));
             }
             // Update footer
             const footerLinks = document.querySelectorAll('footer a');
-            footerLinks[0].textContent = content.footerImpressum;
-            footerLinks[1].textContent = content.footerDatenschutz;
+            footerLinks[0].textContent = sanitizeString(content.footerImpressum);
+            footerLinks[1].textContent = sanitizeString(content.footerDatenschutz);
+            
             const footerRights = document.querySelector('footer p').childNodes[0];
             if (footerRights) {
-                footerRights.textContent = `© 2024 Be The Change. ${content.footerRights} `;
+                footerRights.textContent = `© 2024 Be The Change. ${sanitizeString(content.footerRights)} `;
             }
 
-            // Update flags active state
+            // Update flags
             const allFlags = document.querySelectorAll('.lang-flag');
             allFlags.forEach(flag => flag.classList.remove('active'));
-            document.getElementById(`lang-${lang}`).classList.add('active');
+            document.getElementById(`lang-${lang}`)?.classList.add('active');
 
-            // Handle RTL for Arabic
+            // Handle RTL
             const nav = document.querySelector('.header-nav');
             const mainContent = document.querySelector('main');
             if (lang === 'ar') {
-                nav.classList.add('arabic');
-                mainContent.classList.add('rtl-content');
+                nav?.classList.add('arabic');
+                mainContent?.classList.add('rtl-content');
                 document.dir = 'rtl';
                 document.documentElement.lang = 'ar';
                 document.body.classList.add('rtl-content');
             } else {
-                nav.classList.remove('arabic');
-                mainContent.classList.remove('rtl-content');
+                nav?.classList.remove('arabic');
+                mainContent?.classList.remove('rtl-content');
                 document.dir = 'ltr';
                 document.documentElement.lang = lang;
                 document.body.classList.remove('rtl-content');
             }
 
-            // Reset mobile menu state when changing language
+            // Reset mobile menu
             if (headerNav?.classList.contains('show')) {
                 headerNav.classList.remove('show');
                 mobileMenuButton?.setAttribute('aria-expanded', 'false');
             }
+
             // Update page-specific content
             switch(currentPage) {
                 case 'index.html':
                     if (document.querySelector('#graph')) {
-                        document.querySelector('#graph h2').textContent = content.graph;
-                        document.querySelector('#mission h2').textContent = content.mission;
-                        document.querySelector('#mission p').textContent = content.missionText;
-                        document.querySelector('label[for="country"]').textContent = content.countryLabel;
-                        document.querySelector('label[for="company"]').textContent = content.companyLabel;
+                        document.querySelector('#graph h2').textContent = sanitizeString(content.graph);
+                        document.querySelector('#mission h2').textContent = sanitizeString(content.mission);
+                        document.querySelector('#mission p').textContent = sanitizeString(content.missionText);
+                        document.querySelector('label[for="country"]').textContent = sanitizeString(content.countryLabel);
+                        document.querySelector('label[for="company"]').textContent = sanitizeString(content.companyLabel);
                         updateFilters(lang);
                     }
                     break;
-
                 case 'about.html':
                     if (document.querySelector('#about-text')) {
-                        document.querySelector('#about-text h2').textContent = content.aboutTitle;
+                        document.querySelector('#about-text h2').textContent = sanitizeString(content.aboutTitle);
                         const paragraphs = document.querySelectorAll('#about-text p');
                         if (paragraphs.length >= 3) {
-                            paragraphs[0].textContent = content.aboutWelcome;
-                            paragraphs[1].textContent = content.aboutContact;
-                            paragraphs[2].textContent = content.aboutFeedback;
+                            paragraphs[0].textContent = sanitizeString(content.aboutWelcome);
+                            paragraphs[1].textContent = sanitizeString(content.aboutContact);
+                            paragraphs[2].textContent = sanitizeString(content.aboutFeedback);
                         }
                     }
                     break;
 
                 case 'datenschutz.html':
                     if (document.querySelector('#datenschutz')) {
-                        document.querySelector('#datenschutz h2').textContent = content.privacyTitle;
-                        document.querySelector('#datenschutz p').textContent = content.privacyContent;
+                        document.querySelector('#datenschutz h2').textContent = sanitizeString(content.privacyTitle);
+                        document.querySelector('#datenschutz p').textContent = sanitizeString(content.privacyContent);
                     }
                     break;
 
                 case 'impressum.html':
                     if (document.querySelector('#impressum')) {
-                        document.querySelector('#impressum h2').textContent = content.imprintTitle;
-                        document.querySelector('#impressum p').textContent = content.imprintContent;
+                        document.querySelector('#impressum h2').textContent = sanitizeString(content.imprintTitle);
+                        document.querySelector('#impressum p').textContent = sanitizeString(content.imprintContent);
                     }
                     break;
             }
