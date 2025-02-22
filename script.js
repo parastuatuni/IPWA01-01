@@ -387,3 +387,11 @@ let currentLang = 'de';
     // Initial resize handle
     handleResize();
 });
+
+// Für meine Tests
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        validateSelection,
+        sanitizeString
+    };
+}
