@@ -388,10 +388,16 @@ let currentLang = 'de';
     handleResize();
 });
 
-// Für meine Tests
+// Für meinen security Test
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
         validateSelection,
         sanitizeString
+    };
+}
+// Für meinen language Test
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        updatePageContent
     };
 }
