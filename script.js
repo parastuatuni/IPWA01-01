@@ -185,12 +185,18 @@ let currentLang = 'de';
     // Updated dropdown population with security
     function populateDropdown(dropdown, items, label, allOption) {
         if (!dropdown || !Array.isArray(items)) return;
-        const safeAllOption = allOption;
+      
+        const safeAllOption = sanitizeString(allOption);
         dropdown.innerHTML = `<option value="all">${safeAllOption}</option>`;
+    
         items.forEach(item => {
-          dropdown.innerHTML += `<option value="${item}">${item}</option>`;
+            const safeItem = sanitizeString(item);
+            const option = document.createElement('option');
+            option.value = safeItem;
+            option.textContent = safeItem;
+            dropdown.appendChild(option);
         });
-      }            
+    }               
 
     function createChart(filteredData, lang = 'de') {
         if (!ctx) return;
