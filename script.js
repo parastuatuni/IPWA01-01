@@ -6,19 +6,50 @@ function validateSelection(value, allowedValues) {
     return allowedValues.includes(value) || value === 'all';
 }
 
-function sanitizeString(str) {
+function validateInput(input, pattern) {
+    if (!input) return false;
+    // Use specific regex patterns for different input types
+    return pattern.test(input);
+  }
+  
+  // Common validation patterns
+  const VALIDATION_PATTERNS = {
+    COUNTRY: /^[A-Za-z\s]{2,50}$/,
+    COMPANY: /^[A-Za-z0-9\s_\-&]{2,50}$/,
+    GENERAL_TEXT: /^[A-Za-z0-9\s.,!?()_\-]{1,200}$/
+  };  
+
+//Robustere input validation Funktion:
+function validateInput(input, pattern) {
+    if (!input) return false;
+    // Use specific regex patterns for different input types
+    return pattern.test(input);
+  }
+  
+  // Common validation patterns
+  const VALIDATION_PATTERNS = {
+    COUNTRY: /^[A-Za-z\s]{2,50}$/,
+    COMPANY: /^[A-Za-z0-9\s_\-&]{2,50}$/,
+    GENERAL_TEXT: /^[A-Za-z0-9\s.,!?()_\-]{1,200}$/
+  };
+  
+  function sanitizeString(str) {
     if (typeof str !== 'string') return '';
-    return str.replace(/[<>&"']/g, match => {
-        const entities = {
-            '<': '&lt;',
-            '>': '&gt;',
-            '&': '&amp;',
-            '"': '&quot;',
-            "'": '&#x27;'
-        };
-        return entities[match];
+    return str.replace(/[<>&"'`=\/]/g, match => {
+      const entities = {
+        '<': '&lt;',
+        '>': '&gt;',
+        '&': '&amp;',
+        '"': '&quot;',
+        "'": '&#x27;',
+        '`': '&#x60;',
+        '=': '&#x3D;',
+        '/': '&#x2F;',
+        ':': '&#x3A;'
+      };
+      return entities[match] || match;
     });
-}
+  }  
 
 // Beispiel-Daten für CO₂-Emissionsdaten
 const data = {
@@ -171,13 +202,22 @@ let currentLang = 'de';
     // Updated dropdown population with security
     function populateDropdown(dropdown, items, label, allOption) {
         if (!dropdown || !Array.isArray(items)) return;
-        const safeAllOption = sanitizeString(allOption);
-        dropdown.innerHTML = `<option value="all">${safeAllOption}</option>`;
+        
+        dropdown.innerHTML = '';
+        
+        const allOpt = document.createElement('option');
+        allOpt.value = 'all';
+        allOpt.textContent = sanitizeString(allOption);
+        dropdown.appendChild(allOpt);
+        
         items.forEach(item => {
-            const safeItem = sanitizeString(item);
-            dropdown.innerHTML += `<option value="${safeItem}">${safeItem}</option>`;
+          const opt = document.createElement('option');
+          const safeItem = sanitizeString(item);
+          opt.value = safeItem;  
+          opt.textContent = safeItem;  
+          dropdown.appendChild(opt);
         });
-    }
+      }             
 
     function createChart(filteredData, lang = 'de') {
         if (!ctx) return;

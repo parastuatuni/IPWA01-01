@@ -12,7 +12,12 @@
     script-src 'self' https://cdn.jsdelivr.net/npm/chart.js; 
     style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
     font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data:;">
+    img-src 'self' data:;
+    connect-src 'none';
+    form-action 'self';
+    frame-ancestors 'none';
+    base-uri 'self';
+    object-src 'none';">
 </head>
 <body>
     <header>
