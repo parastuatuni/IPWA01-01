@@ -6,6 +6,7 @@ function validateSelection(value, allowedValues) {
     return allowedValues.includes(value) || value === 'all';
 }
 
+//Robustere input validation Funktion:
 function validateInput(input, pattern) {
     if (!input) return false;
     // Use specific regex patterns for different input types
@@ -18,13 +19,6 @@ function validateInput(input, pattern) {
     COMPANY: /^[A-Za-z0-9\s_\-&]{2,50}$/,
     GENERAL_TEXT: /^[A-Za-z0-9\s.,!?()_\-]{1,200}$/
   };  
-
-//Robustere input validation Funktion:
-function validateInput(input, pattern) {
-    if (!input) return false;
-    // Use specific regex patterns for different input types
-    return pattern.test(input);
-  }
   
   function sanitizeString(str) {
     if (typeof str !== 'string') return '';
