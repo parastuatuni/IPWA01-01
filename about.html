@@ -9,13 +9,12 @@
    
     <meta http-equiv="Content-Security-Policy" 
     content="default-src 'self'; 
-    script-src 'self' https://cdn.jsdelivr.net/npm/chart.js; 
+    script-src 'self' 'nonce-123456' https://cdn.jsdelivr.net/npm/chart.js https://cdnjs.cloudflare.com/ajax/libs/Chart.js/; 
     style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; 
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' data:;
-    connect-src 'none';
+    connect-src 'self' https://cdn.jsdelivr.net/npm/chart.js https://cdnjs.cloudflare.com/ajax/libs/Chart.js/;
     form-action 'self';
-    frame-ancestors 'none';
     base-uri 'self';
     object-src 'none';">
 </head>

@@ -26,28 +26,17 @@ function validateInput(input, pattern) {
     return pattern.test(input);
   }
   
-  // Common validation patterns
-  const VALIDATION_PATTERNS = {
-    COUNTRY: /^[A-Za-z\s]{2,50}$/,
-    COMPANY: /^[A-Za-z0-9\s_\-&]{2,50}$/,
-    GENERAL_TEXT: /^[A-Za-z0-9\s.,!?()_\-]{1,200}$/
-  };
-  
   function sanitizeString(str) {
     if (typeof str !== 'string') return '';
-    return str.replace(/[<>&"'`=\/]/g, match => {
+    return str.replace(/[<>&"']/g, match => {
       const entities = {
         '<': '&lt;',
         '>': '&gt;',
         '&': '&amp;',
         '"': '&quot;',
-        "'": '&#x27;',
-        '`': '&#x60;',
-        '=': '&#x3D;',
-        '/': '&#x2F;',
-        ':': '&#x3A;'
+        "'": '&#x27;'
       };
-      return entities[match] || match;
+      return entities[match];
     });
   }  
 
@@ -202,22 +191,12 @@ let currentLang = 'de';
     // Updated dropdown population with security
     function populateDropdown(dropdown, items, label, allOption) {
         if (!dropdown || !Array.isArray(items)) return;
-        
-        dropdown.innerHTML = '';
-        
-        const allOpt = document.createElement('option');
-        allOpt.value = 'all';
-        allOpt.textContent = sanitizeString(allOption);
-        dropdown.appendChild(allOpt);
-        
+        const safeAllOption = allOption;
+        dropdown.innerHTML = `<option value="all">${safeAllOption}</option>`;
         items.forEach(item => {
-          const opt = document.createElement('option');
-          const safeItem = sanitizeString(item);
-          opt.value = safeItem;  
-          opt.textContent = safeItem;  
-          dropdown.appendChild(opt);
+          dropdown.innerHTML += `<option value="${item}">${item}</option>`;
         });
-      }             
+      }            
 
     function createChart(filteredData, lang = 'de') {
         if (!ctx) return;
